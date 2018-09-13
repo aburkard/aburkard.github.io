@@ -27,7 +27,7 @@ teaser                   : # path of fallback teaser image, e.g. "/assets/images
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
 comments:
-  provider               : disqus # false (default), "disqus", "discourse", "facebook", "google-plus", "staticman", "staticman_v2" "custom"
+  provider               : "disqus" # false (default), "disqus", "discourse", "facebook", "google-plus", "staticman", "staticman_v2" "custom"
   disqus:
     shortname            : andrewburkard # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
   discourse:
@@ -87,7 +87,7 @@ og_image                 : "/assets/images/bio-photo.jpg" # Open Graph/Twitter d
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
   type                   : # Person or Organization (defaults to Person)
-  name                   : Andrew Burkard # If the user or organization name differs from the site's name
+  name                   : "Andrew Burkard" # If the user or organization name differs from the site's name
   links: # An array of links to social media profiles
     - "https://twitter.com/AndrewMBurkard"
     - "https://github.com/aburkard"
@@ -95,7 +95,7 @@ social:
 
 # Analytics
 analytics:
-  provider               : google # false (default), "google", "google-universal", "custom"
+  provider               : "google" # false (default), "google", "google-universal", "custom"
   google:
     tracking_id          : "UA-125731798-1"
     anonymize_ip         : # true, false (default)
