@@ -77,7 +77,7 @@ naver_site_verification  :
 
 # Social Sharing
 twitter:
-  username               : "AndrewMBurkard"
+  username               : "_burkard"
 facebook:
   username               :
   app_id                 :
@@ -89,7 +89,7 @@ social:
   type                   : # Person or Organization (defaults to Person)
   name                   : "Andrew Burkard" # If the user or organization name differs from the site's name
   links: # An array of links to social media profiles
-    - "https://twitter.com/AndrewMBurkard"
+    - "https://twitter.com/_burkard"
     - "https://github.com/aburkard"
     - "https://www.linkedin.com/in/andrew-burkard-9480536b/"
 
@@ -115,9 +115,9 @@ author:
     - label: "Website"
       icon: "fas fa-fw fa-link"
       # url: "https://your-website.com"
-    - label: "@AndrewMBurkard"
+    - label: "@_burkard"
       icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/AndrewMBurkard"
+      url: "https://twitter.com/_burkard"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
       # url: "https://facebook.com/"
