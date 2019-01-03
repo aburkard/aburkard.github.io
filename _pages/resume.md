@@ -17,7 +17,7 @@ permalink: /resume/
 
 - **Cloud Migration** – Automated the deployment of GIS software and the transfer of hundreds of terabytes of imagery data between the AWS cloud and Snowball Edge devices for the US Navy.
 
-### Software Engineer, Agilex / Accenture Federal Services (Chantilly, Va) &emsp; <small>*Jun 2013 - Oct 2016*</small>
+### Software Engineer, Agilex / Accenture Federal Services (Chantilly, Va) &emsp; <small>*June 2013 - Oct 2016*</small>
 
 - **Pluto** – Developed and maintained of an application that matches terabytes of intelligence reporting with collection requirements by leveraging latent semantic indexing (LSI). Optimized the search engine around typical user behavior to increase the average query speed by 10x.
 
