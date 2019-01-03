@@ -32,6 +32,7 @@ permalink: /resume/
 ### MS, Analytics; Georgetown University (Washington, D.C.) &emsp; <small>*Sep 2016 - Aug 2018*</small>
 
 ### BS, *summa cum laude*, Computer Science and Mathematics; Virginia Tech (Blacksburg, Va) &emsp; <small>*Aug 2009 - May 2013*</small>
+ - Phi Beta Kappa
 
 ## Skills
 
