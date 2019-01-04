@@ -7,6 +7,8 @@ permalink: /resume/
 
 <!--link rel="stylesheet" href="/assets/css/chmduquesne.css" media="screen" type="text/css"-->
 
+[Download as PDF...](/assets/projects/Andrew_Burkard_Resume.pdf)
+
 ## Work Experience
 
 ### Data Scientist, B23 (McLean, Va) &emsp; <small>*Oct 2016 - Apr 2018*</small>
