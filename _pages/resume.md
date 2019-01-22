@@ -21,7 +21,7 @@ permalink: /resume/
 
 ### Software Engineer, Agilex / Accenture Federal Services (Chantilly, Va) &emsp; <small>*June 2013 - Oct 2016*</small>
 
-- **Pluto** – Developed and maintained of an application that matches terabytes of intelligence reporting with collection requirements by leveraging latent semantic indexing (LSI). Optimized the search engine around typical user behavior to increase the average query speed by 10x.
+- **Pluto** – Developed and maintained an application that matches terabytes of intelligence reporting with collection requirements by leveraging latent semantic indexing (LSI). Optimized the search engine around typical user behavior to increase the average query speed by 10x.
 
 - **LSI as a Service** – Productized the LSI offering to support end-user customized index training and integrate with third-party systems such as Palantir. Required strong knowledge of the underlying mathematical foundations of LSI to optimize results.
 
