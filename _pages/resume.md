@@ -43,7 +43,7 @@ permalink: /resume/
 
 ### Programming
 
-- Python, R, Java, Scala, C/C++, Swift, JavaScript
+- Python, Ruby on Rails, R, Java, Scala, C/C++, Swift, JavaScript
 
 ### Machine Learning
 
