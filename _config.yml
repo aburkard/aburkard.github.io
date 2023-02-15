@@ -105,8 +105,8 @@ analytics:
 author:
   name             : "Andrew Burkard"
   avatar           : "/assets/images/bio-photo.jpg"
-  bio              : "Data Scientist"
-  location         : "Washington, D.C."
+  bio              : "ML Engineer"
+  location         : "San Francisco, CA"
   email            :
   links:
     - label: "andrewburkard [AT] gmail"
