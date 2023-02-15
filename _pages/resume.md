@@ -11,44 +11,52 @@ permalink: /resume/
 
 ## Work Experience
 
-### Data Scientist, B23 (McLean, Va) &emsp; <small>*Oct 2016 - Apr 2018*</small>
+### Machine Learning Engineer, Triplebyte (San Francisco, Ca) &emsp; <small>_Apr 2019 - Present_</small>
 
-- **B23 Data Platform** – Full-Stack Developer on the company’s bedrock product to automate the creation of clusters for big data ingestion, processing, and analysis tools. Increased the launch speed of our most popular cloud application stacks by 4x.
+- **Tech Lead of Data & Infrastructure** – Migrated our search back-end to Elasticsearch, allowing for 10x faster queries and vector similarity search. Setup Redshift with Kinesis Firehose for streaming event data.
 
-- **Location Data Pipeline** – Developed an ETL pipeline to aggregate and resolve millions of points-of-interest from disparate sources for use in predictive foot-traffic analysis.
+- **Responsiveness** – Built, trained, and deployed a model to predict candidate responsiveness to recruiters' outbound messages, doubling the candidate response rate to over 50%.
 
-- **Cloud Migration** – Automated the deployment of GIS software and the transfer of hundreds of terabytes of imagery data between the AWS cloud and Snowball Edge devices for the US Navy.
+- **Matchmaking** – Launched a recommendation engine using learning-to-rank and neural collaborative filtering to match active job seekers with the companies most likely to contact them.
 
-### Software Engineer, Agilex / Accenture Federal Services (Chantilly, Va) &emsp; <small>*June 2013 - Oct 2016*</small>
+### Data Scientist, B23 (McLean, Va) &emsp; <small>_Oct 2016 - Apr 2018_</small>
 
-- **Pluto** – Developed and maintained an application that matches terabytes of intelligence reporting with collection requirements by leveraging latent semantic indexing (LSI). Optimized the search engine around typical user behavior to increase the average query speed by 10x.
+- **Stackspace** – Full-stack developer on the company’s (mostly) cloud-agnostic product to one-click launch clusters for big data apps (e.g. Airflow, Elasticsearch, Spark). Increased the launch speed of the most popular stacks by 4x by pre-baking images.
 
-- **LSI as a Service** – Productized the LSI offering to support end-user customized index training and integrate with third-party systems such as Palantir. Required strong knowledge of the underlying mathematical foundations of LSI to optimize results.
+- **Location Data Pipeline** – Built an ETL pipeline to aggregate and resolve millions of points-of-interest from disparate sources for use in predictive foot-traffic analysis, which was then sold to hedge funds.
 
-- **iOS Development** – Developed the Agilex corporate mobile app along with an application to manage visitor sign-in for the entire organization.
+- **Cloud Migration** – Automated the transfer of hundreds of terabytes of imagery data between the AWS cloud and Snowball Edge devices running GIS software on-device for the US Navy, replacing a tedious process that involved burning thousands of DVDs.
 
-- **Agile Methodologies** – Agile Methodologies – Adhered to industry-standard Agile/Kanban development practices.
+### Software Engineer, Agilex / Accenture Federal Services (Chantilly, Va) &emsp; <small>_June 2013 - Oct 2016_</small>
+
+- **Pluto** – Developed a semantic search application for matching intelligence reporting with collection requirements via latent semantic indexing (LSI). Optimized the search engine around typical user behavior to increase the average query speed by 10x.
 
 ## Education
 
-### MS, Analytics; Georgetown University (Washington, D.C.) &emsp; <small>*Sep 2016 - Aug 2018*</small>
+### MS, Analytics; Georgetown University (Washington, D.C.) &emsp; <small>_Sep 2016 - Aug 2018_</small>
 
-### BS, *summa cum laude*, Computer Science and Mathematics; Virginia Tech (Blacksburg, Va) &emsp; <small>*Aug 2009 - May 2013*</small>
- - Phi Beta Kappa
+### BS, _summa cum laude_, Computer Science and Mathematics; Virginia Tech (Blacksburg, Va) &emsp; <small>_Aug 2009 - May 2013_</small>
+
+- Phi Beta Kappa
 
 ## Skills
 
 ### Programming
-- Python, R, Java, Scala, C/C++, Objective-C, Swift, JavaScript
+
+- Python, R, Java, Scala, C/C++, Swift, JavaScript
 
 ### Machine Learning
-- PyTorch, FAIRseq, TensorFlow, Keras, NLTK, H2O, Weka
 
-### Big Data
-- Hadoop, Spark, NiFi, MongoDB, SQL, Elasticsearch
+- PyTorch, Pyro PPL, Huggingface Transformers, Pandas/NumPy/scikit-learn
+
+### Data
+
+- PostgreSQL, SQL, Elasticsearch, Spark, Apache NiFi, MongoDB
 
 ### Miscellaneous
-- AWS, Ansible, LaTeX, Meteor.js, Mathematica
+
+- AWS, GCP, Ansible, LaTeX, enough React to be dangerous
 
 ### Interests
-- Soccer, Twitter bots, Britpop, Sports analytics, Seinfeld
+
+- Soccer, Twitter bots, Prediction markets, Britpop, Sports analytics, Seinfeld
