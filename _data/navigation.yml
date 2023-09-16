@@ -1,5 +1,5 @@
 main:
-  - title: "Home"
+  - title: "About Me"
     url: /
  # - title: "About"
  #   url: /about/
@@ -7,5 +7,5 @@ main:
     url: /resume/
   - title: "Projects"
     url: /projects/
- # - title: "Blog"
- #   url: /blog/
+  - title: "Blog"
+    url: /blog/

@@ -10,13 +10,14 @@
 # Review documentation to determine if you should use `theme` or `remote_theme`
 # https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/#installing-the-theme
 
-# theme                  : "minimal-mistakes-jekyll"
-remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "dark" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+theme                  : "minimal-mistakes-jekyll"
+#remote_theme           : "mmistakes/minimal-mistakes"
+minimal_mistakes_skin    : "dirt" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale                   : "en-US"
 title                    : "Andrew Burkard"
+masthead_title           : " " # Blank
 title_separator          : "-"
 name                     : "Andrew Burkard"
 description              : "Andrew's personal site"
@@ -24,7 +25,7 @@ url                      : "https://andrewburkard.com"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : aburkard/aburkard.github.io
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
-# breadcrumbs            : false # true, false (default)
+breadcrumbs              : false # true, false (default)
 words_per_minute         : 200
 comments:
   provider               : "disqus" # false (default), "disqus", "discourse", "facebook", "google-plus", "staticman", "staticman_v2" "custom"
@@ -91,7 +92,7 @@ social:
   links: # An array of links to social media profiles
     - "https://twitter.com/_burkard"
     - "https://github.com/aburkard"
-    - "https://www.linkedin.com/in/andrew-burkard-9480536b/"
+    - "https://www.linkedin.com/in/andrew-burkard/"
 
 # Analytics
 analytics:
@@ -126,7 +127,7 @@ author:
       url: "https://github.com/aburkard"
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
-      url: "https://www.linkedin.com/in/andrew-burkard-9480536b/"
+      url: "https://www.linkedin.com/in/andrew-burkard/"
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
       # url: "https://instagram.com/"
@@ -282,7 +283,7 @@ compress_html:
 
 # Defaults
 defaults:
-  # _posts
+  # _pages
   - scope:
       path: ""
       type: pages
@@ -293,3 +294,15 @@ defaults:
       comments: false
       share: false
       related: false
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: true
+      share: true
+      related: true
+      show_date: true
