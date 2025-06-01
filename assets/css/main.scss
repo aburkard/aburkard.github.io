@@ -170,6 +170,19 @@ body {
     }
   }
 
+// Better link styling
+.page__content a:not(.btn) {
+    color: #3182ce;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      color: #2c5282;
+    //  border-bottom-color: #3182ce;
+    }
+  }
+
 // Better table styling
 .page__content table {
   font-size: 0.9em;
