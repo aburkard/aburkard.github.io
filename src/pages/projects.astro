@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Projects — Andrew Burkard">
+  <h1>Projects</h1>
+
+  <div class="items content">
+    <div class="item">
+      <span class="item-title"><a href="https://pmtdb.com">PMTDB</a></span>
+      <span class="item-description">A searchable database of 26,000+ takes from Pardon My Take, scored for accuracy using baseball-style metrics. Built because nobody was holding podcast hosts accountable and someone had to.</span>
+    </div>
+    <div class="item">
+      <span class="item-title"><a href="https://www.kaggle.com/aburkard/competitions">March Madness</a></span>
+      <span class="item-description">Annual Kaggle competitor since 2019. Fully Bayesian hierarchical model in NumPyro/JAX — think KenPom, but probabilistic — adjusting for travel distance, altitude, and referee tendencies. Best finish: gold medal in 2021 (4th/451), the one year they didn't award a cash prize, so all I got was a water bottle.</span>
+    </div>
+    <div class="item">
+      <span class="item-title"><a href="https://github.com/aburkard/banana-browser">Banana Browser</a></span>
+      <span class="item-description">A web browser that doesn't render HTML. It asks an AI to imagine what the page looks like instead. You click on the generated image, the AI interprets your click, and generates the next page. It's worse in every way and that's the point.</span>
+    </div>
+    <div class="item">
+      <span class="item-title">Language Models (2018)</span>
+      <span class="item-description">Trained ~100M parameter transformers on ProFootballTalk comments, then Reddit, before "GPT-1" was even a thing. Deployed as Twitter bots on t2.small CPU instances, generating surprisingly coherent replies in under 2 seconds. Elon Musk even followed one briefly — then he bought the platform, promising to ban all the bots.</span>
+    </div>
+    <div class="item">
+      <span class="item-title"><a href="https://github.com/aburkard/sklearn-prg">sklearn-prg</a></span>
+      <span class="item-description">Precision-Recall-Gain curves for scikit-learn, because regular PR curves lie to you when your classes are imbalanced. pip install sklearn_prg.</span>
+    </div>
+  </div>
+
+  <h2>old school projects</h2>
+
+  <div class="items content">
+    <div class="item">
+      <span class="item-title"><a href="/assets/projects/Examining-NBA-Crunch-Time.pdf">Examining NBA Crunch Time</a></span>
+      <span class="item-description">Modeled end-of-game basketball as a two-player zero-sum game to figure out whether a team down 4 should shoot a 2 or a 3. Ran thousands of simulations to mathematically confirm what every coach already believed.</span>
+    </div>
+    <div class="item">
+      <span class="item-title"><a href="/assets/projects/automatically-generating-profootballtalk.pdf">Automatically Generating ProFootballTalk Comments</a></span>
+      <span class="item-description">Built a Markov chain and a pointer-generator network to auto-generate PFT comments — a corpus famously described as "didactic misspelling and arrogant disdain for critical thought." The neural net mostly learned to copy-paste usernames.</span>
+    </div>
+    <div class="item">
+      <span class="item-title"><a href="/assets/projects/bayesball.pdf">Bayesball</a></span>
+      <span class="item-description">Bayesian models for pitcher FIP components using Dirichlet-Multinomial conjugacy and Gibbs sampling. Beat the standard FIP at predicting future ERA, which is a very satisfying result for a very small audience.</span>
+    </div>
+    <div class="item">
+      <span class="item-title"><a href="/assets/projects/Burkard-Fang-Ruberg.pdf">Single Image Super Resolution</a></span>
+      <span class="item-description">Used sparse representations to upscale blurry satellite images. Turns out a dictionary trained on flowers works about as well as one trained on satellites, which is either profound or depressing.</span>
+    </div>
+    <div class="item">
+      <span class="item-title"><a href="/assets/projects/comparing-league-strength.pdf">Comparing League Strength via the Soccer Power Index</a></span>
+      <span class="item-description">Applied permutation tests to FiveThirtyEight's SPI to settle which European league is best. Found no significant difference between the top four, which will satisfy absolutely no one on soccer Twitter. Also confirmed that England's second division is statistically better than MLS.</span>
+    </div>
+    <div class="item">
+      <span class="item-title"><a href="/assets/projects/gdelt-news-analysis.pdf">GDELT News Analysis</a></span>
+      <span class="item-description">Analyzed 90 GB of global media event data to track sentiment around the 2016 election. Discovered that GDELT's sentiment algorithm thinks election night was a positive event for Hillary Clinton, which tells you most of what you need to know about sentiment analysis.</span>
+    </div>
+  </div>
+</Base>

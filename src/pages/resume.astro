@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Resume — Andrew Burkard">
+  <h1>Resume</h1>
+
+  <h2>Experience</h2>
+
+  <div class="items">
+    <div class="experience-item">
+      <div class="experience-header">
+        <span class="experience-role">Head of AI</span>
+        <span class="experience-date">Apr 2025 — Present</span>
+      </div>
+      <div class="experience-org">HackerPulse · San Francisco</div>
+      <ul class="experience-details">
+        <li>Designed and built the AI service that powers the product — engineering leaders chat with an AI agent connected to live data from GitHub, Jira, Slack, Notion, etc. to get answers about their engineering org</li>
+        <li>Built a self-reinforcing knowledge graph across all synced integrations — agents discover implicit relationships, each new connection helps surface the next, and the user-facing agent queries it via tool calls</li>
+      </ul>
+    </div>
+
+    <div class="experience-item">
+      <div class="experience-header">
+        <span class="experience-role">Founding AI Engineer</span>
+        <span class="experience-date">Apr 2023 — Dec 2024</span>
+      </div>
+      <div class="experience-org">Yuma AI (YC W23) · San Francisco</div>
+      <ul class="experience-details">
+        <li>Fine-tuned Mistral 7B to replace GPT-4 for ticket classification, cutting per-call inference costs by ~100x. Created an LLM-as-judge evaluation system to safely validate prompt changes and migrate between models</li>
+        <li>Designed an active learning loop for ticket routing: embed tickets → SVM classifies known types → anomaly detector catches out-of-distribution tickets → LLM labels the unknowns → retrain</li>
+        <li>Implemented the retrieval pipeline combining embedding search with BM25-style keyword matching</li>
+      </ul>
+    </div>
+
+    <div class="experience-item">
+      <div class="experience-header">
+        <span class="experience-role">Machine Learning Engineer</span>
+        <span class="experience-date">Apr 2019 — Mar 2023</span>
+      </div>
+      <div class="experience-org">Triplebyte · San Francisco</div>
+      <ul class="experience-details">
+        <li>Joined as the first ML hire; promoted to Tech Lead of Data & Infrastructure</li>
+        <li>Migrated candidate search from a Postgres read replica (20s on a bad day) to Elasticsearch (60–300ms). Enabled hybrid search: BM25, metadata filters, and vector similarity in one index</li>
+        <li>Trained a logistic regression to predict which candidates would respond to recruiter outreach — three features, doubled response rate from 20% to 40%</li>
+        <li>Built a recommendation engine for a two-sided recruiting marketplace using neural collaborative filtering: content-based features handle cold start, collaborative filtering takes over as interaction data accumulates</li>
+      </ul>
+    </div>
+
+    <div class="experience-item">
+      <div class="experience-header">
+        <span class="experience-role">Data Scientist</span>
+        <span class="experience-date">Oct 2016 — Apr 2018</span>
+      </div>
+      <div class="experience-org">B23 · McLean, VA</div>
+      <ul class="experience-details">
+        <li>Built an ETL pipeline aggregating millions of points-of-interest from disparate sources for predictive foot-traffic analysis, sold to hedge funds</li>
+        <li>Automated transfer of hundreds of terabytes of imagery between AWS and Snowball Edge devices for the US Navy, replacing a process that involved burning thousands of DVDs</li>
+      </ul>
+    </div>
+
+    <div class="experience-item">
+      <div class="experience-header">
+        <span class="experience-role">Software Engineer</span>
+        <span class="experience-date">Jun 2013 — Oct 2016</span>
+      </div>
+      <div class="experience-org">Agilex / Accenture Federal Services · Chantilly, VA</div>
+      <ul class="experience-details">
+        <li>Developed a semantic search application for matching intelligence reporting with collection requirements via latent semantic indexing, optimizing average query speed by 10x</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Education</h2>
+
+  <div class="items">
+    <div class="item">
+      <span class="item-title">MS, Data Science</span>
+      <span class="item-meta">Georgetown University · 2016 — 2018</span>
+    </div>
+    <div class="item">
+      <span class="item-title">BS, Computer Science & Mathematics</span>
+      <span class="item-meta">Virginia Tech, summa cum laude · 2009 — 2013</span>
+      <span class="item-description">Phi Beta Kappa</span>
+    </div>
+  </div>
+
+  <h2>Skills</h2>
+
+  <div class="skills-grid">
+    <div class="skill-category">
+      <h3>Languages</h3>
+      <p>Python, Ruby, TypeScript, SQL</p>
+    </div>
+    <div class="skill-category">
+      <h3>AI / ML</h3>
+      <p>PyTorch, JAX, NumPyro, OpenAI Agents SDK, LangChain, MCP, LoRA, Hugging Face, scikit-learn, XGBoost, pandas</p>
+    </div>
+    <div class="skill-category">
+      <h3>Infrastructure</h3>
+      <p>PostgreSQL, FastAPI, Elasticsearch, Redis, AWS</p>
+    </div>
+  </div>
+</Base>

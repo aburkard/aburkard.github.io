@@ -1,0 +1,113 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Andrew Burkard — ML Engineer in San Francisco" } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+const nav = [
+  { label: 'resume', href: '/resume/' },
+  { label: 'projects', href: '/projects/' },
+  { label: 'writing', href: '/blog/' },
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="canonical" href={new URL(currentPath, Astro.site).href} />
+    <script is:inline>
+      (function() {
+        const saved = localStorage.getItem('theme');
+        if (saved) {
+          document.documentElement.setAttribute('data-theme', saved);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <a href="/" class="site-name">Andrew Burkard</a>
+        <nav>
+          <ul>
+            {nav.map(({ label, href }) => (
+              <li>
+                <a
+                  href={href}
+                  aria-current={currentPath === href ? 'page' : undefined}
+                >
+                  {label}
+                </a>
+              </li>
+            ))}
+            <li>
+              <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                <svg class="theme-icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="theme-icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </header>
+
+      <main class="page-content">
+        <slot />
+      </main>
+
+      <footer>
+        <span>&copy; {new Date().getFullYear()}</span>
+        <span>Made in San Francisco</span>
+      </footer>
+    </div>
+  </body>
+</html>
+
+<script is:inline>
+  (function() {
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
+    function getEffectiveTheme() {
+      const saved = html.getAttribute('data-theme');
+      if (saved) return saved;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function updateToggleVisibility() {
+      const theme = getEffectiveTheme();
+      document.querySelectorAll('.theme-icon-sun').forEach(el => {
+        el.style.display = theme === 'dark' ? 'block' : 'none';
+      });
+      document.querySelectorAll('.theme-icon-moon').forEach(el => {
+        el.style.display = theme === 'light' ? 'block' : 'none';
+      });
+    }
+
+    toggle.addEventListener('click', function() {
+      const current = getEffectiveTheme();
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateToggleVisibility();
+    });
+
+    updateToggleVisibility();
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+      if (!localStorage.getItem('theme')) {
+        updateToggleVisibility();
+      }
+    });
+  })();
+</script>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>
