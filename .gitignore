@@ -1,5 +1,9 @@
-_site/
-.sass-cache/
-Gemfile*
+node_modules/
+dist/
+.astro/
 .DS_Store
+.playwright-mcp/
 tmp/
+_site/
+.jekyll-cache/
+public/designs/

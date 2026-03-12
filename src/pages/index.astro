@@ -1,0 +1,137 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Andrew Burkard">
+  <div class="intro content">
+    <div class="intro-header">
+      <img src="/images/cartoon-headshot.png" alt="Andrew Burkard" class="photo" />
+      <div class="intro-text">
+        <p class="lead">
+          ML engineer in San Francisco. I lead AI at
+          <a href="https://hackerpulse.com">HackerPulse</a>, building agents that
+          tell engineering leaders what's actually happening on their teams.
+          Before that, I was founding AI engineer at <a href="https://www.yuma.ai">Yuma</a>&nbsp;(YC&nbsp;W23)
+          and the first ML hire at <a href="https://www.ycombinator.com/companies/triplebyte">Triplebyte</a>.
+        </p>
+        <p class="lead secondary">
+          Most of my hobbies are systems problems in disguise: football kits, credit card points, curling.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">selected projects</div>
+    <div class="items featured-items">
+      <a href="https://pmtdb.com" class="featured-item">
+        <span class="featured-title">PMTDB</span>
+        <span class="featured-desc">26,000+ podcast takes, scored for accuracy</span>
+      </a>
+      <a href="https://github.com/aburkard/banana-browser" class="featured-item">
+        <span class="featured-title">Banana Browser</span>
+        <span class="featured-desc">A browser that imagines pages instead of rendering them</span>
+      </a>
+      <a href="https://www.kaggle.com/aburkard/competitions" class="featured-item">
+        <span class="featured-title">March Madness</span>
+        <span class="featured-desc">Bayesian bracket model, still not good enough to beat the vig</span>
+      </a>
+    </div>
+    <a href="/projects/" class="see-all">all projects &rarr;</a>
+  </div>
+
+  <div class="section">
+    <div class="connect">
+      <a href="https://github.com/aburkard">GitHub</a>
+      <a href="https://twitter.com/_burkard">Twitter</a>
+      <a href="https://linkedin.com/in/andrew-burkard">LinkedIn</a>
+      <a href="mailto:andrewburkard@gmail.com">Email</a>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .intro-header {
+    display: flex;
+    gap: var(--space-lg);
+    align-items: flex-start;
+  }
+
+  .photo {
+    width: 64px;
+    height: 64px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  @media (max-width: 600px) {
+    .intro-header {
+      flex-direction: column;
+    }
+  }
+
+  .intro-text .lead:first-child {
+    margin-bottom: var(--space-md);
+  }
+
+  .intro-text .lead:last-child {
+    margin-bottom: 0;
+  }
+
+  .featured-items {
+    gap: 0;
+  }
+
+  .featured-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-lg);
+    padding: var(--space-sm) 0;
+    text-decoration: none !important;
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border);
+    transition: color 0.15s ease;
+  }
+
+  .featured-item:first-child {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .featured-item:hover {
+    color: var(--color-text-secondary);
+  }
+
+  .featured-title {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .featured-desc {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--color-text-tertiary);
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  .see-all {
+    display: inline-block;
+    margin-top: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .see-all:hover {
+    color: var(--color-text);
+  }
+</style>
