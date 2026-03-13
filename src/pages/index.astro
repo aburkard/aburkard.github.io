@@ -115,8 +115,8 @@ import Base from '../layouts/Base.astro';
   .featured-desc {
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: 0.85rem;
-    color: var(--color-text-tertiary);
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
     text-align: right;
     line-height: 1.4;
   }
@@ -133,5 +133,16 @@ import Base from '../layouts/Base.astro';
 
   .see-all:hover {
     color: var(--color-text);
+  }
+
+  @media (max-width: 600px) {
+    .featured-item {
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .featured-desc {
+      text-align: left;
+    }
   }
 </style>

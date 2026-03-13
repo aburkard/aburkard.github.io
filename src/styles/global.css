@@ -27,8 +27,8 @@
   --color-bg: #F7F7F7;
   --color-text: #1a1a1a;
   --color-text-secondary: #626262;
-  --color-text-tertiary: #999;
-  --color-border: #e0e0e0;
+  --color-text-tertiary: #757575;
+  --color-border: #c8c8c8;
   --color-link: #1a1a1a;
   --color-link-hover: #626262;
   --color-surface: #EFEFEF;
@@ -37,11 +37,11 @@
 [data-theme="dark"] {
   --color-bg: #141414;
   --color-text: #e0e0e0;
-  --color-text-secondary: #999;
-  --color-text-tertiary: #666;
-  --color-border: #2a2a2a;
+  --color-text-secondary: #aaa;
+  --color-text-tertiary: #999;
+  --color-border: #333;
   --color-link: #e0e0e0;
-  --color-link-hover: #999;
+  --color-link-hover: #aaa;
   --color-surface: #1e1e1e;
 }
 
@@ -49,11 +49,11 @@
   :root:not([data-theme="light"]) {
     --color-bg: #141414;
     --color-text: #e0e0e0;
-    --color-text-secondary: #999;
-    --color-text-tertiary: #666;
-    --color-border: #2a2a2a;
+    --color-text-secondary: #aaa;
+    --color-text-tertiary: #999;
+    --color-border: #333;
     --color-link: #e0e0e0;
-    --color-link-hover: #999;
+    --color-link-hover: #aaa;
     --color-surface: #1e1e1e;
   }
 }
@@ -97,14 +97,14 @@ body {
 header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
   margin-bottom: var(--space-2xl);
 }
 
 header .site-name {
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--color-text);
   text-decoration: none;
 }
@@ -126,6 +126,8 @@ nav a {
   color: var(--color-text-secondary);
   text-decoration: none;
   transition: color 0.15s ease;
+  padding: 8px 4px;
+  margin: -8px -4px;
 }
 
 nav a:hover {
@@ -144,7 +146,8 @@ nav a[aria-current="page"] {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--color-text-tertiary);
-  padding: 0;
+  padding: 12px;
+  margin: -12px;
   transition: color 0.15s ease;
 }
 
@@ -154,6 +157,7 @@ nav a[aria-current="page"] {
 
 .theme-toggle svg {
   display: block;
+  transform: translateY(2px);
 }
 
 /* ===== Typography ===== */
@@ -201,6 +205,14 @@ p {
   color: var(--color-text-tertiary);
 }
 
+/* ===== Focus ===== */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 /* ===== Links ===== */
 a {
   color: var(--color-link);
@@ -210,7 +222,7 @@ a {
 
 .content a {
   text-decoration: underline;
-  text-decoration-color: var(--color-border);
+  text-decoration-color: var(--color-text-tertiary);
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
 }
@@ -223,11 +235,6 @@ a {
 /* ===== Intro (Home) ===== */
 .intro {
   margin-bottom: var(--space-xl);
-}
-
-.intro h1 {
-  font-size: 1.4rem;
-  margin-bottom: var(--space-md);
 }
 
 .intro .lead {
@@ -288,12 +295,12 @@ a {
 .item-meta {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 0.88rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
 }
 
 .item-description {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
   line-height: 1.55;
 }
@@ -326,7 +333,7 @@ a {
 }
 
 .experience-org {
-  font-size: 0.88rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
   margin-bottom: var(--space-sm);
 }
@@ -339,7 +346,7 @@ a {
 }
 
 .experience-details li {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   line-height: 1.55;
   color: var(--color-text-secondary);
   padding-left: var(--space-md);
@@ -360,13 +367,13 @@ a {
 }
 
 .skill-category h3 {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: 500;
   margin-bottom: var(--space-xs);
 }
 
 .skill-category p {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-secondary);
   margin-bottom: 0;
 }
@@ -431,6 +438,7 @@ footer a:hover {
 
   header {
     flex-direction: column;
+    align-items: center;
     gap: var(--space-md);
   }
 
