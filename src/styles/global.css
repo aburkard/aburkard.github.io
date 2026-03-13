@@ -1,14 +1,41 @@
-/* ===== Fonts ===== */
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400&display=swap');
+/* Fonts loaded via <link> in Base.astro for non-render-blocking */
+
+/* ===== Fallback font metrics to reduce CLS ===== */
+@font-face {
+  font-family: 'Karla Fallback';
+  src: local('Arial');
+  size-adjust: 98%;
+  ascent-override: 95%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Newsreader Fallback';
+  src: local('Georgia');
+  size-adjust: 105%;
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono Fallback';
+  src: local('Courier New');
+  size-adjust: 115%;
+  ascent-override: 80%;
+  descent-override: 20%;
+  line-gap-override: 0%;
+}
 
 /* ===== Reset ===== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 /* ===== Tokens ===== */
 :root {
-  --font-serif: 'Newsreader', Georgia, serif;
-  --font-sans: 'Karla', -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+  --font-serif: 'Newsreader', 'Newsreader Fallback', Georgia, serif;
+  --font-sans: 'Karla', 'Karla Fallback', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'JetBrains Mono Fallback', 'SF Mono', monospace;
 
   --content-width: 640px;
   --page-padding: 24px;
