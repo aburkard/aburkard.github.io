@@ -5,7 +5,10 @@ import Base from '../layouts/Base.astro';
 <Base title="Andrew Burkard">
   <div class="intro content">
     <div class="intro-header">
-      <img src="/images/cartoon-headshot.png" alt="Andrew Burkard" class="photo" />
+      <picture>
+        <source srcset="/images/cartoon-headshot.webp" type="image/webp" />
+        <img src="/images/cartoon-headshot.png" alt="Andrew Burkard" class="photo" width="64" height="64" />
+      </picture>
       <div class="intro-text">
         <p class="lead">
           ML engineer in San Francisco. I lead AI at
