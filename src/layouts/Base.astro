@@ -77,7 +77,7 @@ const nav = [
 
       <footer>
         <span>&copy; {new Date().getFullYear()}</span>
-        <span>Made in San Francisco</span>
+        <span>Made with <span id="footer-emoji"></span> in San Francisco</span>
       </footer>
     </div>
   </body>
@@ -121,6 +121,16 @@ const nav = [
       }
     });
   })();
+
+  // footer emoji
+  var emojis = ['☕', '🥌', '✈️', '⚽', '💳', '🧹', '🎯', '🏔️', '🍌'];
+  var el = document.getElementById('footer-emoji');
+  if (el) el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+  // hi
+  console.log('%c👋 hi.', 'font-size: 16px; font-weight: bold');
+  console.log('%cyou seem like the kind of person who opens the console.', 'font-size: 12px; color: #999');
+  console.log('%csource: https://github.com/aburkard/aburkard.github.io', 'font-size: 12px; color: #999');
 </script>
 
 <style is:global>

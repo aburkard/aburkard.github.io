@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="404 — Andrew Burkard">
+  <div class="not-found">
+    <h1>404</h1>
+    <p class="message">You're looking for something that doesn't exist here. Relatable.</p>
+    <a href="/" class="back">back to safety &rarr;</a>
+  </div>
+</Base>
+
+<style>
+  .not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+    margin-top: var(--space-2xl);
+  }
+
+  .message {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+
+  .back {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .back:hover {
+    color: var(--color-text);
+  }
+</style>

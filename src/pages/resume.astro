@@ -3,7 +3,10 @@ import Base from '../layouts/Base.astro';
 ---
 
 <Base title="Resume — Andrew Burkard">
-  <h1>Resume</h1>
+  <div class="resume-header">
+    <h1>Resume</h1>
+    <a href="/assets/projects/Andrew_Burkard_Resume.pdf" class="download-link" download>download pdf</a>
+  </div>
 
   <h2>Experience</h2>
 
@@ -102,3 +105,23 @@ import Base from '../layouts/Base.astro';
     </div>
   </div>
 </Base>
+
+<style>
+  .resume-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .download-link {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .download-link:hover {
+    color: var(--color-text);
+  }
+</style>

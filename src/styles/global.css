@@ -70,6 +70,7 @@
   --color-link: #1a1a1a;
   --color-link-hover: #626262;
   --color-surface: #EFEFEF;
+  --color-selection: #d4d4d4;
 }
 
 [data-theme="dark"] {
@@ -81,6 +82,7 @@
   --color-link: #e0e0e0;
   --color-link-hover: #aaa;
   --color-surface: #1e1e1e;
+  --color-selection: #333;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -93,7 +95,14 @@
     --color-link: #e0e0e0;
     --color-link-hover: #aaa;
     --color-surface: #1e1e1e;
+    --color-selection: #333;
   }
+}
+
+/* ===== Selection ===== */
+::selection {
+  background-color: var(--color-selection);
+  color: var(--color-text);
 }
 
 /* ===== Base ===== */
