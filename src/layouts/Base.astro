@@ -25,6 +25,15 @@ const nav = [
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon-32x32.png" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL('/og.png', Astro.site).href} />
+    <meta property="og:url" content={new URL(currentPath, Astro.site).href} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL('/og.png', Astro.site).href} />
     <link rel="preload" href="/fonts/karla.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="canonical" href={new URL(currentPath, Astro.site).href} />
     <script is:inline>
