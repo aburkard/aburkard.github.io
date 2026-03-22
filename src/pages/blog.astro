@@ -1,9 +1,105 @@
 ---
 import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+posts.sort((a, b) => (a.data.date > b.data.date ? -1 : 1));
+
+function formatDate(dateStr: string) {
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
 ---
 
 <Base title="Writing — Andrew Burkard">
   <h1>Writing</h1>
 
-  <p class="empty-state">I keep starting posts and never finishing them. Check back, or don't.</p>
+  <p class="subscribe-line"><a href="/rss.xml" class="rss-link"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56z"/><path d="M4 10.1v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg> more coming...possibly. be sure to smash that subscribe button</a></p>
+
+  <div class="posts">
+    {posts.map(post => (
+      <a href={`/blog/${post.id}/`} class="post-item">
+        <div class="post-header">
+          <span class="post-title">{post.data.title}</span>
+          <span class="post-date">{formatDate(post.data.date)}</span>
+        </div>
+        {post.data.description && <span class="post-desc">{post.data.description}</span>}
+      </a>
+    ))}
+  </div>
 </Base>
+
+<style>
+  .posts {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-item {
+    display: block;
+    text-decoration: none;
+    color: var(--color-text);
+    padding: var(--space-lg) 0;
+    transition: color 0.15s ease;
+  }
+
+  .post-item:hover {
+    color: var(--color-text-secondary);
+  }
+
+  .post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xs);
+  }
+
+  .post-title {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .post-date {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-text-tertiary);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .post-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .subscribe-line {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    margin-bottom: var(--space-lg);
+  }
+
+  .rss-link {
+    color: var(--color-text-tertiary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .rss-link:hover {
+    color: var(--color-text);
+  }
+
+  .rss-link svg {
+    vertical-align: -1px;
+    margin-right: 3px;
+  }
+
+  @media (max-width: 600px) {
+    .post-header {
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+  }
+</style>

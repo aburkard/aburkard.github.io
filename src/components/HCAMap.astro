@@ -1,0 +1,134 @@
+---
+import menData from '../data/hca-men.json';
+import womenData from '../data/hca-women.json';
+---
+
+<div class="map-controls">
+  <button class="map-toggle active" data-gender="men">men's</button>
+  <button class="map-toggle" data-gender="women">women's</button>
+</div>
+<div id="map-chart"></div>
+
+<script is:inline define:vars={{ menMap: menData.map, womenMap: womenData.map }}>
+  (async function() {
+    const [Plot, topojson, topojsonData] = await Promise.all([
+      import('https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm'),
+      import('https://cdn.jsdelivr.net/npm/topojson-client@3/+esm'),
+      fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(r => r.json())
+    ]);
+
+    const states = topojson.feature(topojsonData, topojsonData.objects.states);
+    const statemesh = topojson.mesh(topojsonData, topojsonData.objects.states, (a, b) => a !== b);
+
+    let currentData = menMap;
+
+    function renderMap(data, gender) {
+      currentData = data;
+      const style = getComputedStyle(document.documentElement);
+      const textColor = style.getPropertyValue('--color-text').trim();
+      const textTertiary = style.getPropertyValue('--color-text-tertiary').trim();
+      const surfaceColor = style.getPropertyValue('--color-surface').trim();
+      const borderColor = style.getPropertyValue('--color-border').trim();
+      const container = document.getElementById('map-chart');
+      container.innerHTML = '';
+
+      const pts = data.map(d => d.pts);
+      const lo = Math.floor(Math.min(...pts) * 10) / 10;
+      const hi = Math.ceil(Math.max(...pts) * 10) / 10;
+
+      const chart = Plot.plot({
+        width: 640,
+        height: 420,
+        projection: "albers-usa",
+        style: {
+          background: 'transparent',
+          color: textColor,
+          fontFamily: "'Karla', sans-serif",
+          fontSize: '11px'
+        },
+        color: {
+          scheme: "YlOrRd",
+          domain: [lo, hi],
+          label: "Home advantage (pts)",
+          legend: true
+        },
+        marks: [
+          Plot.geo(states, {fill: surfaceColor, stroke: borderColor, strokeWidth: 0.5}),
+          Plot.geo(statemesh, {stroke: borderColor, strokeWidth: 0.3}),
+          Plot.dot(data, {
+            x: "lng", y: "lat",
+            fill: "pts",
+            r: 3.5,
+            stroke: surfaceColor,
+            strokeWidth: 0.5,
+            title: d => `${d.name}: +${d.pts} pts`,
+            tip: true
+          })
+        ]
+      });
+      container.appendChild(chart);
+    }
+
+    renderMap(menMap, 'men');
+
+    document.querySelectorAll('.map-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.map-toggle').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderMap(btn.dataset.gender === 'men' ? menMap : womenMap, btn.dataset.gender);
+      });
+    });
+
+    // Re-render on theme change
+    new MutationObserver(() => renderMap(currentData)).observe(
+      document.documentElement, {attributes: true, attributeFilter: ['data-theme']}
+    );
+  })();
+</script>
+
+<style>
+  .map-controls {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  .map-toggle {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: none;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    padding: var(--space-xs) var(--space-md);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+
+  .map-toggle.active {
+    color: var(--color-text);
+    border-color: var(--color-text);
+  }
+
+  .map-toggle:hover {
+    color: var(--color-text);
+  }
+
+  #map-chart {
+    margin: var(--space-lg) 0;
+  }
+
+  :global(#map-chart figure svg [aria-label="tip"] text) {
+    fill: var(--color-text) !important;
+  }
+
+  :global(#map-chart figure svg [aria-label="tip"] rect) {
+    fill: var(--color-surface) !important;
+    stroke: var(--color-border) !important;
+  }
+
+  :global(#map-chart figure svg [aria-label="tip"] path) {
+    fill: var(--color-surface) !important;
+    stroke: var(--color-border) !important;
+  }
+</style>

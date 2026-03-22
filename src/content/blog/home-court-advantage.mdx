@@ -1,0 +1,52 @@
+---
+title: "Who Has the Best Home Court Advantage in College Basketball?"
+date: "2026-03-21"
+description: "Spoiler: it's not Duke. A Bayesian model ranks all 372 Division I home courts."
+---
+import TrendChart from '../../components/TrendChart.astro';
+import HCAMap from '../../components/HCAMap.astro';
+import TeamTable from '../../components/TeamTable.astro';
+
+Every year I build a March Madness<sup><a href="https://www.espn.com/mens-college-basketball/story/_/id/48263821/ncaa-sues-draftkings-march-madness-trademark-infringement">TM</a></sup> model for [Kaggle's competition](https://www.kaggle.com/competitions/march-machine-learning-mania-2026). It's a fully Bayesian hierarchical latent factors model, similar in spirit to KenPom, but with the specifc goal of predicting tournament games. It estimates team strength and possession tempo, and includes factors like player injuries and travel impact, among other things. It's still not enough to beat the Vegas vig consistently, at least not on point spreads. But it does produce some fun byproducts.
+
+Here is one: a home-court advantage estimate for ~372 D1 schools.[^2] Many models treat home-court advantage as a single nation-wide number, but I've found it's worth estimating it per school. The differences aren't enormous — a couple of points separate the top from the bottom — but for a predictive model, a couple of points is a lot. I won't keep you in suspense; here are the rankings.
+
+## the rankings
+
+<TeamTable />
+
+The table has two numbers for each school, and the distinction matters.
+
+**Standardized** is the cleaner comparison. It answers: how many points would this team be favored by at home versus on a neutral court, against a team traveling the average distance, at a standard pace?[^1] Men are standardized to 68.5 possessions and 291 miles of opponent travel; women to 70.3 possessions and 274 miles. Every school is evaluated under the same conditions, so you're comparing the building and the crowd, not the geography.
+
+**Real-world** accounts for how far opponents actually travel to play there. This is where it gets tricky, because the model includes travel distance as a factor, and that's hard to untangle from home-court advantage. Different schools, depending on where they're located, tend to play teams that travel very different distances. Hawaii is the best example. In the real-world column, they get a big boost because their opponents have to fly across an ocean. But if you took Hawaii's arena and their fans and plopped them down in the middle of Tobacco Road, their home-court advantage would be pretty mid. A lot of what they "get" at home is just that teams are exhausted and jet-lagged by the time they arrive. Their fans are probably pretty chill.
+
+So: standardized tells you about the arena. Real-world tells you what it's actually like to play a road game there. Both are useful, but they're measuring slightly different things.
+
+---
+
+Arkansas at #1 tracks. Bud Walton holds 19,200 and is genuinely one of the loudest buildings in the country. There are some surprises though, like Bradley and Evansville in the top 12. Conversely, Georgetown at #367 makes perfect sense if you've ever been to a Hoyas game at the phone booth — a 20,000-seat NBA/NHL arena with an empty upper deck. It'd be interesting to rerun this separating venues to see if they do better at McDonough, although it's a tiny sample.
+
+Some blue bloods do pretty well here. Indiana is #5, a hair below in-state rival Purdue. Duke at #19, maybe not quite as transcendent as the Cameron Crazies' reputation would suggest, but still very good. And Duke actually fares better on the women's side, where they crack the top ten. On the women's side more broadly, the advantages are smaller across the board, about 2.7 points on average versus 3.1 for men, and Wyoming at #1 is fun. The women's rankings skew heavily toward mid-majors, which checks out: a packed, loud 3,000-seat arena probably creates a bigger relative edge than you'd think.
+
+One pattern that shows up in both the men's and women's rankings is geographic. A lot of the top teams are from the interior of the country, particularly the Mountain West and the Rockies. Altitude is almost certainly a factor there, on top of travel distance. You can see it clearly on the map below.
+
+## the map
+
+<HCAMap />
+
+The coasts, especially the northeast, run much cooler than the interior, and the Rocky Mountain schools cluster near the top.
+
+## the trend
+
+Home-court advantage has been declining for two decades. On the men's side it's dropped from about 4.5 points in 2003 to 3.1 in 2026. The women's trend looks similar starting from 2010.[^3]
+
+<TrendChart />
+
+You can see the clear dip on the chart in 2021. That's when COVID emptied the arenas and the advantage cratered to about +2.5 for men and +2.2 for women. That's probably the cleanest natural experiment we'll ever get on whether home-court advantage comes from the crowd or from sleeping in your own bed. The advantage didn't disappear, it was still there, but a part of it clearly comes from having people in the building too.
+
+It bounced back in 2022–2023, but the longer trend has just been steadily downward, and there are a few theories as to why. One is that travel has gotten easier, better chartered flights, less grueling road trips, although who knows, in the age of super conferences that might reverse itself with teams like UCLA playing in-conference games 2,400 miles at Rutgers. Another theory is that officials have gotten better: more video review, more evaluation, less susceptibility to crowd pressure. [Rick Pitino has talked about this.](https://www.si.com/college/2017/01/09/hoop-thoughts-home-court-advantage-baylor-kansas-villanova) He used to be able to spot which refs a home crowd would get to, and now the evaluation tools have made that much harder. And there's a player-side theory too: kids coming through the AAU and prep circuit now have played in so many hostile environments by the time they reach college that the road doesn't faze them the way it used to. It's probably some combination of all of these, but the decline is real and clear.
+
+[^1]: Points of expected scoring-margin improvement, not raw points scored. A +4.0 school doesn't score 4 extra points; their expected *margin* improves by 4.
+[^2]: The exact count shifts year to year as programs come and go.
+[^3]: My model only looks back this far because this is when I have decent box score data coverage. I may train a simpler version in the future with more years, but it wouldn't be possession adjusted.

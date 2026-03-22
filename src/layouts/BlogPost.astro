@@ -1,0 +1,169 @@
+---
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  date: string;
+  description?: string;
+}
+
+const { title, date, description } = Astro.props;
+
+function formatDate(dateStr: string) {
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+---
+
+<Base title={`${title} — Andrew Burkard`} description={description}>
+  <article class="post content">
+    <h1>{title}</h1>
+    <p class="post-date">{formatDate(date)}</p>
+    <slot />
+  </article>
+</Base>
+
+<script is:inline>
+  (function() {
+    // Find all footnote references (the superscript links in the text)
+    const refs = document.querySelectorAll('a[data-footnote-ref]');
+    // Hide the footnotes section at the bottom
+    const footnotesSection = document.querySelector('.footnotes');
+
+    if (!refs.length || !footnotesSection) return;
+
+    refs.forEach(ref => {
+      const id = ref.getAttribute('href').replace('#', '');
+      const footnote = document.getElementById(id);
+      if (!footnote) return;
+
+      // Get the footnote text (strip the back-link)
+      const clone = footnote.cloneNode(true);
+      const backref = clone.querySelector('[data-footnote-backref]');
+      if (backref) backref.remove();
+      const text = clone.textContent.trim();
+
+      // Prevent default scroll behavior
+      ref.addEventListener('click', (e) => e.preventDefault());
+
+      // Create tooltip
+      const tooltip = document.createElement('span');
+      tooltip.className = 'fn-tooltip';
+      tooltip.textContent = text;
+
+      // Wrap the sup in a positioned container
+      const sup = ref.closest('sup');
+      if (!sup) return;
+
+      const wrapper = document.createElement('span');
+      wrapper.className = 'fn-wrapper';
+      sup.parentNode.insertBefore(wrapper, sup);
+      wrapper.appendChild(sup);
+      wrapper.appendChild(tooltip);
+
+      // Show/hide
+      const show = () => tooltip.classList.add('visible');
+      const hide = () => tooltip.classList.remove('visible');
+
+      wrapper.addEventListener('mouseenter', show);
+      wrapper.addEventListener('mouseleave', hide);
+      wrapper.addEventListener('click', () => {
+        tooltip.classList.toggle('visible');
+      });
+      wrapper.style.cursor = 'pointer';
+    });
+
+    // Keep the bottom footnotes section visible
+  })();
+</script>
+
+<style>
+  .post h1 {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .post-date {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--space-xl);
+  }
+
+  .post :global(p) {
+    line-height: 1.65;
+    margin-bottom: var(--space-md);
+  }
+
+  .post :global(sup a) {
+    color: var(--color-text-tertiary);
+    text-decoration: none;
+    font-size: 0.7rem;
+  }
+
+  .post :global(sup a:hover) {
+    color: var(--color-text);
+  }
+
+  .post :global(hr) {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: var(--space-lg) 0;
+  }
+
+  .post :global(.footnotes) {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .post :global(.footnotes h2) {
+    display: none;
+  }
+
+  .post :global(.footnotes p) {
+    font-size: 0.8rem;
+    color: var(--color-text-tertiary);
+    line-height: 1.5;
+  }
+
+  .post :global(.fn-wrapper) {
+    position: relative;
+    display: inline;
+  }
+
+  .post :global(.fn-tooltip) {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 3px;
+    padding: var(--space-sm) var(--space-md);
+    font-size: 0.8rem;
+    font-family: var(--font-sans);
+    font-style: normal;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    width: 280px;
+    white-space: normal;
+    z-index: 20;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .post :global(.fn-tooltip.visible) {
+    display: block;
+  }
+
+  .post :global(.fn-tooltip::after) {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--color-border);
+  }
+</style>

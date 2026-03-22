@@ -1,0 +1,313 @@
+---
+import menData from '../data/hca-men.json';
+import womenData from '../data/hca-women.json';
+---
+
+<div class="table-controls">
+  <div class="table-toggles">
+    <button class="table-toggle active" data-gender="men">men's</button>
+    <button class="table-toggle" data-gender="women">women's</button>
+  </div>
+  <input type="text" class="table-search" id="table-search" placeholder="search teams..." />
+</div>
+
+<div class="table-wrap">
+  <table class="ranking-table" id="ranking-table">
+    <thead>
+      <tr>
+        <th class="rank-col sortable" data-sort="rank">#</th>
+        <th class="sortable" data-sort="name">school</th>
+        <th class="pts-col sortable" data-sort="pts">standardized</th>
+        <th class="pts-col sortable" data-sort="rw_pts">real-world</th>
+        <th class="pts-col sortable" data-sort="dist">avg travel</th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+  <div id="table-pagination" class="table-pagination"></div>
+</div>
+
+<script is:inline define:vars={{ menTeams: menData.teams, womenTeams: womenData.teams }}>
+  (function() {
+    let currentGender = 'men';
+    let currentSort = 'rank';
+    let sortAsc = true;
+    let searchTerm = '';
+    let page = 0;
+    const pageSize = 25;
+
+    function getData() {
+      return currentGender === 'men' ? menTeams : womenTeams;
+    }
+
+    function render() {
+      let data = getData().filter(t => {
+        if (!searchTerm) return true;
+        return t.name.toLowerCase().includes(searchTerm.toLowerCase());
+      });
+
+      data = [...data].sort((a, b) => {
+        let av = a[currentSort], bv = b[currentSort];
+        if (currentSort === 'name') {
+          return sortAsc ? av.localeCompare(bv) : bv.localeCompare(av);
+        }
+        return sortAsc ? av - bv : bv - av;
+      });
+
+      const total = data.length;
+      const totalPages = Math.ceil(total / pageSize);
+      if (page >= totalPages) page = Math.max(0, totalPages - 1);
+      const paged = data.slice(page * pageSize, (page + 1) * pageSize);
+
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = paged.map(t => {
+        const logoUrl = t.espn ? `https://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/${t.espn}.png&h=40&w=40` : '';
+        const logoImg = logoUrl ? `<img src="${logoUrl}" alt="" class="team-logo" loading="lazy" onerror="this.style.display='none'" />` : '';
+        return `<tr>
+          <td class="rank-col">${t.rank}</td>
+          <td class="name-col">${logoImg}<span>${t.name}</span></td>
+          <td class="pts-col">+${t.pts}</td>
+          <td class="pts-col">${t.dist ? (t.rw_pts >= 0 ? '+' : '') + t.rw_pts : '—'}</td>
+          <td class="pts-col">${t.dist ? t.dist + ' mi' : '—'}</td>
+        </tr>`;
+      }).join('');
+
+      // Pagination controls
+      const paginationEl = document.getElementById('table-pagination');
+      if (totalPages <= 1) {
+        paginationEl.innerHTML = '';
+        return;
+      }
+      paginationEl.innerHTML = `
+        <button class="page-btn" ${page === 0 ? 'disabled' : ''} data-page="${page - 1}">&larr;</button>
+        <span class="page-info">${page + 1} / ${totalPages}</span>
+        <button class="page-btn" ${page >= totalPages - 1 ? 'disabled' : ''} data-page="${page + 1}">&rarr;</button>
+      `;
+      paginationEl.querySelectorAll('.page-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          page = parseInt(btn.dataset.page);
+          render();
+        });
+      });
+    }
+
+    // Sort headers
+    document.querySelectorAll('.sortable').forEach(th => {
+      th.addEventListener('click', () => {
+        const sort = th.dataset.sort;
+        if (currentSort === sort) {
+          sortAsc = !sortAsc;
+        } else {
+          currentSort = sort;
+          sortAsc = sort === 'name' ? true : true;
+        }
+        document.querySelectorAll('.sortable').forEach(h => h.classList.remove('sort-asc', 'sort-desc'));
+        th.classList.add(sortAsc ? 'sort-asc' : 'sort-desc');
+        page = 0;
+        render();
+      });
+    });
+
+    // Gender toggle
+    document.querySelectorAll('.table-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.table-toggle').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentGender = btn.dataset.gender;
+        page = 0;
+        render();
+      });
+    });
+
+    // Search
+    document.getElementById('table-search').addEventListener('input', (e) => {
+      searchTerm = e.target.value;
+      page = 0;
+      render();
+    });
+
+    render();
+    // Mark default sort column
+    document.querySelector('[data-sort="rank"]').classList.add('sort-asc');
+  })();
+</script>
+
+<style>
+  .table-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+    flex-wrap: wrap;
+  }
+
+  .table-toggles {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .table-toggle {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: none;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    padding: var(--space-xs) var(--space-md);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+
+  .table-toggle.active {
+    color: var(--color-text);
+    border-color: var(--color-text);
+  }
+
+  .table-toggle:hover {
+    color: var(--color-text);
+  }
+
+  .table-search {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: var(--space-xs) var(--space-sm);
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    background: var(--color-bg);
+    color: var(--color-text);
+    width: 180px;
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .table-search::placeholder {
+    color: var(--color-text-tertiary);
+  }
+
+  .table-search:focus {
+    border-color: var(--color-text);
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  .ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  .ranking-table thead {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .ranking-table th {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--color-text-tertiary);
+    text-align: left;
+    padding: var(--space-xs) var(--space-xs);
+    text-transform: lowercase;
+    white-space: nowrap;
+  }
+
+  .ranking-table th.sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s ease;
+  }
+
+  .ranking-table th.sortable:hover {
+    color: var(--color-text);
+  }
+
+  .ranking-table th.sort-asc::after {
+    content: ' ↑';
+  }
+
+  .ranking-table th.sort-desc::after {
+    content: ' ↓';
+  }
+
+  .ranking-table :global(td) {
+    padding: var(--space-xs) var(--space-xs);
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: middle;
+  }
+
+  .rank-col {
+    width: 36px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+  }
+
+  .pts-col {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .ranking-table :global(.name-col) {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .ranking-table :global(.team-logo) {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .table-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+  }
+
+  .table-pagination :global(.page-btn) {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: none;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    padding: var(--space-xs) var(--space-sm);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+
+  .table-pagination :global(.page-btn:hover:not(:disabled)) {
+    color: var(--color-text);
+    border-color: var(--color-text);
+  }
+
+  .table-pagination :global(.page-btn:disabled) {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  .table-pagination :global(.page-info) {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-text-tertiary);
+  }
+
+  @media (max-width: 600px) {
+    .table-controls {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .table-search {
+      width: 100%;
+    }
+  }
+</style>

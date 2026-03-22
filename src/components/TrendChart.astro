@@ -1,0 +1,77 @@
+---
+import menData from '../data/hca-men.json';
+import womenData from '../data/hca-women.json';
+
+const seasons = [
+  ...menData.seasons.map(d => ({...d, gender: "Men's"})),
+  ...womenData.seasons.map(d => ({...d, gender: "Women's"}))
+];
+---
+
+<div id="trend-chart"></div>
+
+<script is:inline define:vars={{ seasons }}>
+  (async function() {
+    const Plot = await import('https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm');
+
+    function renderTrend() {
+      const container = document.getElementById('trend-chart');
+      container.innerHTML = '';
+      const style = getComputedStyle(document.documentElement);
+      const textColor = style.getPropertyValue('--color-text').trim();
+
+      const chart = Plot.plot({
+        width: 640,
+        height: 300,
+        marginLeft: 40,
+        marginBottom: 35,
+        style: {
+          background: 'transparent',
+          color: textColor,
+          fontFamily: "'Karla', sans-serif",
+          fontSize: '12px'
+        },
+        x: {label: null, tickFormat: d => String(d)},
+        y: {label: "Home court advantage (points)", domain: [1.5, 5], grid: true},
+        color: {
+          domain: ["Men's", "Women's"],
+          range: ['#5b8fce', '#d4739a'],
+          legend: true
+        },
+        marks: [
+          Plot.ruleY([0]),
+          Plot.lineY(seasons, {x: "season", y: "hca", stroke: "gender", strokeWidth: 1.5}),
+          Plot.dot(seasons, {x: "season", y: "hca", fill: "gender", r: 2.5}),
+          Plot.tip(seasons, Plot.pointer({x: "season", y: "hca", title: d => `${d.gender} ${d.season}: ${d.hca} pts`}))
+        ]
+      });
+      container.appendChild(chart);
+    }
+
+    renderTrend();
+
+    new MutationObserver(() => renderTrend()).observe(
+      document.documentElement, {attributes: true, attributeFilter: ['data-theme']}
+    );
+  })();
+</script>
+
+<style>
+  #trend-chart {
+    margin: var(--space-lg) 0;
+  }
+
+  :global(#trend-chart figure svg [aria-label="tip"] text) {
+    fill: var(--color-text) !important;
+  }
+
+  :global(#trend-chart figure svg [aria-label="tip"] rect) {
+    fill: var(--color-surface) !important;
+    stroke: var(--color-border) !important;
+  }
+
+  :global(#trend-chart figure svg [aria-label="tip"] path) {
+    fill: var(--color-surface) !important;
+    stroke: var(--color-border) !important;
+  }
+</style>
