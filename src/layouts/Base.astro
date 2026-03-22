@@ -35,6 +35,8 @@ const nav = [
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={new URL('/og.png', Astro.site).href} />
     <link rel="preload" href="/fonts/karla.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="preconnect" href="https://a.espncdn.com" crossorigin />
     <link rel="canonical" href={new URL(currentPath, Astro.site).href} />
     <script is:inline>
       (function() {

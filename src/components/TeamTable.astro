@@ -17,8 +17,8 @@ import womenData from '../data/hca-women.json';
       <tr>
         <th class="rank-col sortable" data-sort="rank">#</th>
         <th class="sortable" data-sort="name">school</th>
-        <th class="pts-col sortable" data-sort="pts">standardized</th>
-        <th class="pts-col sortable" data-sort="rw_pts">real-world</th>
+        <th class="pts-col sortable" data-sort="pts">standard&shy;ized</th>
+        <th class="pts-col sortable" data-sort="rw_pts">real world</th>
         <th class="pts-col sortable" data-sort="dist">avg travel</th>
       </tr>
     </thead>
@@ -211,7 +211,6 @@ import womenData from '../data/hca-women.json';
     text-align: left;
     padding: var(--space-xs) var(--space-xs);
     text-transform: lowercase;
-    white-space: nowrap;
   }
 
   .ranking-table th.sortable {
@@ -249,6 +248,10 @@ import womenData from '../data/hca-women.json';
     text-align: right;
     font-family: var(--font-mono);
     font-size: 0.8rem;
+  }
+
+  .ranking-table :global(td.pts-col) {
+    white-space: nowrap;
   }
 
   .ranking-table :global(.name-col) {
