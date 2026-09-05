@@ -1,0 +1,184 @@
+---
+import data from '../data/fantasy-2026.json';
+import { DEFAULTS, SCORING_FIELDS, playerStatus, rankPlayers } from '../lib/fantasy-board.mjs';
+const initial = rankPlayers(data.players, DEFAULTS);
+const slots = [['QB', 'QB'], ['RB', 'RB'], ['WR', 'WR'], ['TE', 'TE'], ['FLEX', 'Flex (RB / WR / TE)'], ['SF', 'Superflex (QB / RB / WR / TE)']];
+const maxSlots = { QB: 2, RB: 4, WR: 5, TE: 3, FLEX: 3, SF: 2 };
+const columns = [
+  ['rank', 'Rank', 'Rank'],
+  ['name', 'Player', 'Player'],
+  ['position', 'Pos', 'Position'],
+  ['points', 'Points', 'Points'],
+  ['vor', 'VOR', 'Value Over Replacement'],
+  ['ecr', 'ECR', 'Expert Consensus Ranking'],
+  ['delta', 'Δ ECR', 'Expert Consensus Ranking Difference'],
+  ['adp', 'ADP', 'Average Draft Position'],
+  ['adpDelta', 'Δ ADP', 'Average Draft Position Difference'],
+];
+const signed = n => n == null ? '—' : `${n > 0 ? '+' : ''}${Math.round(n)}`;
+---
+
+<section class="fantasy-board" aria-label="2026 fantasy football draft board">
+  <fieldset class="settings" id="fantasy-controls" disabled>
+    <legend class="sr-only">League settings and player filters</legend>
+    <div class="settings-row">
+      <label>Scoring
+        <span class="select-control">
+        <select id="fantasy-preset">
+          <option value="ppr">PPR</option><option value="half">Half-PPR</option>
+          <option value="standard">Standard (no PPR)</option>
+          <option value="custom" disabled>Custom</option>
+        </select>
+        </span>
+      </label>
+      <label>Teams <input id="fantasy-teams" name="teams" type="number" min="4" max="20" step="1" value="12" /></label>
+      <span id="fantasy-roster-summary" class="roster-summary">1 QB / 2 RB / 2 WR / 1 TE / 1 flex</span>
+      <button type="button" id="fantasy-advanced-toggle" aria-expanded="false" aria-controls="fantasy-advanced">Advanced</button>
+    </div>
+    <div class="advanced" id="fantasy-advanced" hidden>
+      <div class="advanced-body">
+      <h3>Starting lineup</h3>
+      <div class="advanced-grid">
+        {slots.map(([key, label]) => <label>{label}<input name={key} type="number" min="0" max={maxSlots[key]} step="1" value={DEFAULTS[key]} /></label>)}
+      </div>
+      <h3>Scoring</h3>
+      <div class="scoring-grid">
+        {['Passing', 'Rushing', 'Receiving', 'Other'].map(group => <fieldset>
+          <legend>{group}</legend>
+          {SCORING_FIELDS.filter(([g]) => g === group).map(([, key, label, min, max, step]) => <label>{label}<input name={key} type="number" min={min} max={max} step={step} value={DEFAULTS[key]} /></label>)}
+        </fieldset>)}
+      </div>
+      <button type="button" id="fantasy-reset">Reset league settings</button>
+      </div>
+    </div>
+    <p id="fantasy-error" role="alert" hidden></p>
+    <div class="filter-row">
+      <label class="search"><span class="sr-only">Search player or team</span><input id="fantasy-search" type="search" placeholder="Search player or team…" /></label>
+      <label><span class="sr-only">Position</span><span class="select-control"><select id="fantasy-position"><option value="ALL">All positions</option>{['QB', 'RB', 'WR', 'TE'].map(p => <option>{p}</option>)}</select></span></label>
+      <label><span class="sr-only">Availability</span><span class="select-control"><select id="fantasy-view"><option value="all">All players</option><option value="available">Available</option><option value="taken">Taken</option></select></span></label>
+      <label class="checkbox-label"><input type="checkbox" id="fantasy-draftable" checked /> Hide fringe players</label>
+      <button type="button" id="fantasy-undo" disabled>Undo</button>
+      <button type="button" id="fantasy-reset-draft" disabled>Reset draft</button>
+    </div>
+  </fieldset>
+  <div class="board-meta"><span id="fantasy-count" role="status" aria-live="polite">{data.players.length} players</span></div>
+  <p class="notice" id="fantasy-scoring-note" hidden></p>
+  <noscript><p>Enable JavaScript to change league settings, filter players and mark picks. These are the default 12-team PPR rankings.</p></noscript>
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Draft rankings, scroll for more players">
+    <table>
+      <caption class="sr-only">Projected 2026 season points, league-adjusted value and PPR market ranks</caption>
+      <thead><tr>{columns.map(([key, label, fullName]) => <th scope="col" title={fullName} aria-sort={key === 'rank' ? 'ascending' : 'none'}><button type="button" data-sort={key} aria-label={fullName}>{label}<span aria-hidden="true">{key === 'rank' ? ' ↑' : ''}</span></button></th>)}<th scope="col" title="Taken">Taken</th></tr></thead>
+      <tbody id="fantasy-rows">{initial.rows.filter(p => p.eligible).map(p => <tr>
+        <td>{p.rank}</td><td class="player"><strong>{p.name}</strong> <span>{p.team}</span><small title={playerStatus(p.status, p.news).label} aria-label={playerStatus(p.status, p.news).label} data-info={playerStatus(p.status, p.news).code === 'i'} hidden={!p.status}>{'\u00a0' + playerStatus(p.status, p.news).code}</small></td>
+        <td>{p.position}</td><td>{Math.round(p.points)}</td><td>{signed(p.vor)}</td><td>{p.ecr ?? '—'}</td><td>{signed(p.delta)}</td><td>{p.adp?.toFixed(1) ?? '—'}</td><td>{signed(p.adpDelta)}</td><td><input type="checkbox" disabled aria-label={`Mark ${p.name} taken`} /></td>
+      </tr>)}</tbody>
+    </table>
+    <p id="fantasy-empty" hidden>No players match. Try another position, clear your search, or turn off “Hide fringe players.”</p>
+  </div>
+  <details class="method">
+    <summary>Sources</summary>
+    <p>ECR: <a href={data.sources.ecr}>FantasyPros</a>. ADP: <a href={data.sources.adp}>Fantasy Football Calculator</a>. Both are 12-team PPR.</p>
+    <p>Data saved September 2, 2026. Injury news isn’t updated live.</p>
+  </details>
+</section>
+
+<script>
+  import '../lib/fantasy-board-ui.mjs';
+</script>
+
+<style>
+  .fantasy-board { width: 100%; min-width: 0; margin-top: 2rem; font-size: .875rem; --control-border: color-mix(in srgb, var(--color-border) 75%, var(--color-bg)); --gain: #20664c; --loss: #a13e38; }
+  :global([data-theme="dark"]) .fantasy-board { --gain: #83c6aa; --loss: #e4a49e; }
+  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme="light"])) .fantasy-board { --gain: #83c6aa; --loss: #e4a49e; } }
+  .settings { border: 0; min-width: 0; }
+  .settings-row, .filter-row { display: flex; align-items: end; flex-wrap: wrap; gap: .65rem; }
+  .settings-row { display: grid; grid-template-columns: 8rem 4rem minmax(0, 1fr) auto; margin-bottom: 1rem; }
+  .settings-row > label { min-width: 0; }
+  .settings-row input { width: 100%; }
+  #fantasy-advanced-toggle { display: flex; align-items: center; gap: .5rem; padding-inline: .25rem; white-space: nowrap; }
+  label { display: flex; flex-direction: column; gap: .3rem; }
+  input, select, button { font: inherit; color: var(--color-text); }
+  input, select { min-height: 2.4rem; background: transparent; border: 0; border-bottom: 1px solid var(--control-border); border-radius: 0; padding: .35rem .25rem; max-width: 100%; }
+  input[type="search"] { appearance: none; -webkit-appearance: none; }
+  .select-control { position: relative; display: block; min-width: 0; }
+  .select-control::after { content: ''; position: absolute; right: .65rem; top: calc(50% - .3rem); width: .4rem; height: .4rem; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); pointer-events: none; color: var(--color-text-secondary); }
+  .select-control select { appearance: none; -webkit-appearance: none; width: 100%; cursor: pointer; padding-right: 2rem; }
+  input, select, button, summary { touch-action: manipulation; }
+  input[type="number"] { width: 4.5rem; font-variant-numeric: tabular-nums; }
+  input[type="checkbox"] { min-height: 0; width: 1rem; height: 1rem; padding: 0; border: 0; accent-color: var(--color-text); }
+  input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-visible, .table-scroll:focus-visible { outline: 2px solid var(--color-text-secondary); outline-offset: 3px; }
+  button { cursor: pointer; border: 0; border-radius: 0; background: transparent; padding: .4rem .5rem; min-height: 2.4rem; color: var(--color-text-secondary); text-underline-offset: .25em; }
+  button:enabled:hover { color: var(--color-text); text-decoration: underline; }
+  input:not([type="checkbox"]):hover, select:hover, input:not([type="checkbox"]):focus, select:focus { border-color: var(--color-text-secondary); }
+  button:disabled { opacity: .45; cursor: default; }
+  .roster-summary { color: var(--color-text-secondary); padding-bottom: .5rem; }
+  summary { cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .65rem 0; list-style: none; color: var(--color-text-secondary); }
+  summary::-webkit-details-marker { display: none; }
+  summary::after, #fantasy-advanced-toggle::after { content: ''; width: .4rem; height: .4rem; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); margin: -.2rem .2rem 0 0; flex-shrink: 0; }
+  details[open] > summary::after, #fantasy-advanced-toggle[aria-expanded="true"]::after { transform: rotate(225deg); margin-top: .2rem; }
+  summary:hover { color: var(--color-text); }
+  .advanced { margin: .4rem 0 1rem; }
+  #fantasy-advanced-toggle[aria-expanded="true"] { color: var(--color-text); }
+  .advanced-body { padding: .9rem 0 1rem; border-bottom: 1px solid var(--control-border); }
+  .advanced-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem 1.25rem; margin-bottom: 1.25rem; }
+  .advanced h3 { margin: 0 0 .8rem; font-family: var(--font-sans); font-size: 1rem; font-weight: 500; }
+  .advanced-grid label, .scoring-grid label { flex-direction: row; align-items: center; justify-content: space-between; gap: .65rem; line-height: 1.4; }
+  .advanced input { width: 4.5rem; flex-shrink: 0; text-align: right; font-variant-numeric: tabular-nums; }
+  .scoring-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin-bottom: 1.25rem; }
+  .scoring-grid fieldset { border: 0; min-width: 0; }
+  .scoring-grid legend { font-weight: 500; margin-bottom: .6rem; }
+  .scoring-grid label { margin-bottom: .55rem; }
+  #fantasy-reset { color: var(--color-text-secondary); }
+  .advanced p, .method p { color: var(--color-text-secondary); font-size: .875rem; line-height: 1.5; max-width: 80ch; }
+  .filter-row { align-items: center; }
+  .search { flex: 1; min-width: 180px; }
+  .search input { width: 100%; }
+  .checkbox-label { flex-direction: row; align-items: center; gap: .4rem; }
+  .board-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; color: var(--color-text-secondary); font-size: .8rem; margin: .8rem 0 .4rem; }
+  .table-scroll { max-width: 100%; max-height: 70vh; overflow: auto; border-block: 1px solid var(--color-border); scroll-padding-top: 3rem; }
+  table { width: 100%; border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  th { position: sticky; top: 0; background: var(--color-surface); z-index: 2; font-weight: 500; border-bottom: 1px solid var(--color-border); }
+  th button { color: var(--color-text-secondary); }
+  th[aria-sort="ascending"] button, th[aria-sort="descending"] button { color: var(--color-text); }
+  th button { border: none; border-radius: 0; background: transparent; width: 100%; padding: .5rem .25rem; text-align: right; }
+  th button:enabled:hover { background: color-mix(in srgb, var(--color-border) 25%, var(--color-surface)); text-decoration: none; }
+  th:last-child { padding-inline: .5rem; }
+  td { padding: .55rem .3rem; border-bottom: 1px solid var(--control-border); text-align: right; }
+  th:nth-child(2) button, th:nth-child(3) button, td:nth-child(2), td:nth-child(3) { text-align: left; }
+  td:first-child { color: var(--color-text-secondary); }
+  th:nth-child(2), td:nth-child(2) { position: sticky; left: 0; }
+  td:nth-child(2) { background: var(--color-bg); z-index: 1; }
+  th:nth-child(2) { z-index: 3; }
+  .player { min-width: 9rem; white-space: normal; }
+  .player strong { font-weight: 500; }
+  .player span { color: var(--color-text-secondary); font-size: .8rem; }
+  .player small { font-size: .75rem; font-weight: 600; color: var(--loss); white-space: nowrap; cursor: help; }
+  .player small[data-info="true"] { color: var(--color-text-secondary); }
+  :global(.fantasy-board td.positive) { color: var(--gain); }
+  :global(.fantasy-board td.negative) { color: var(--loss); }
+  :global(.fantasy-board tr.is-taken .player strong) { text-decoration: line-through; color: var(--color-text-secondary); }
+  tbody tr:hover { background: var(--color-surface); }
+  tbody tr:hover td:nth-child(2) { background: var(--color-surface); }
+  td:last-child { text-align: center; }
+  .notice { padding: .6rem .8rem; border-left: 3px solid var(--color-border); background: var(--color-surface); }
+  #fantasy-error { color: var(--loss); }
+  #fantasy-empty { padding: 1rem; }
+  .method { margin-top: .4rem; }
+  .method p { margin-top: .6rem; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  @media (max-width: 600px) {
+    .advanced-grid, .scoring-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .settings-row { grid-template-columns: minmax(0, 1fr) 4rem auto; }
+    .roster-summary { grid-column: 1 / -1; grid-row: 2; padding-bottom: 0; }
+    #fantasy-advanced-toggle { grid-column: 3; grid-row: 1; }
+    .filter-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .search, .checkbox-label { grid-column: 1 / -1; }
+    .search { min-width: 0; }
+    input:not([type="checkbox"]), select { font-size: 1rem; min-height: 2.75rem; }
+    .filter-row button { min-height: 2.75rem; }
+    .table-scroll { max-height: 65vh; }
+  }
+  @media (max-width: 480px) {
+    .advanced-grid, .scoring-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

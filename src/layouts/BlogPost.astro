@@ -5,9 +5,10 @@ interface Props {
   title: string;
   date: string;
   description?: string;
+  image: string;
 }
 
-const { title, date, description } = Astro.props;
+const { title, date, description, image } = Astro.props;
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr + 'T00:00:00');
@@ -15,7 +16,7 @@ function formatDate(dateStr: string) {
 }
 ---
 
-<Base title={`${title} — Andrew Burkard`} description={description}>
+<Base title={`${title} — Andrew Burkard`} description={description} image={image} imageAlt={`${title}${description ? ` — ${description}` : ''} — ${formatDate(date)} — Andrew Burkard`}>
   <article class="post content">
     <h1>{title}</h1>
     <p class="post-date">{formatDate(date)}</p>
@@ -41,7 +42,13 @@ function formatDate(dateStr: string) {
       const clone = footnote.cloneNode(true);
       const backref = clone.querySelector('[data-footnote-backref]');
       if (backref) backref.remove();
-      const text = clone.textContent.trim();
+      clone.querySelectorAll('br').forEach(br => {
+        const next = br.nextSibling;
+        if (next?.nodeType === Node.TEXT_NODE) next.textContent = next.textContent.replace(/^\s+/, '');
+        br.replaceWith(document.createTextNode('\n'));
+      });
+      clone.querySelectorAll('p').forEach(p => p.append(document.createTextNode('\n\n')));
+      const text = clone.textContent.replace(/\n[ \t]*\n(?:[ \t]*\n)+/g, '\n\n').trim();
 
       // Prevent default scroll behavior
       ref.addEventListener('click', (e) => e.preventDefault());
@@ -148,7 +155,7 @@ function formatDate(dateStr: string) {
     color: var(--color-text-secondary);
     line-height: 1.5;
     width: 280px;
-    white-space: normal;
+    white-space: pre-line;
     z-index: 20;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }

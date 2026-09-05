@@ -1,0 +1,39 @@
+---
+title: "Vibe-Coded Fantasy Football Projections"
+date: "2026-09-05"
+description: "You're right to be skeptical. This isn't just a draft board. It's a genuinely sophisticated way to finish last."
+---
+import FantasyBoard from '../../components/FantasyBoard.astro';
+
+One of the nice things about AI coding agents is that they let me take on side projects that previously wouldn't have been worth the effort. Small-scale data science problems are an especially good use case because you can just give an agent a task and tell it to think up and run its own experiments,[^1] knowing you can actually measure and verify the results.
+
+With that in mind, I present my fantasy football projections for the 2026 season. The results are...*decent*. In fact, they beat consensus alone by about 2.5% on average point-prediction error in historical tests,[^2] although there's almost certainly some overfitting to the validation set from trying so many things. They produce some interesting zags. For instance, my model loves Ashton Jeanty. He was its top-ranked player before his injury. Overall, I expect they're basically a wash versus just sticking to consensus.[^4]
+
+But to put my money where my mouth is, I even used these in my own draft.[^5] We'll see how it goes!
+
+<FantasyBoard />
+
+[^1]: I propose we call this vibe modeling.
+[^2]: I used walk-forward validation over 2022–2025. I trained separate gradient-boosted tree and extremely randomized tree ensembles for QB, RB, WR, and TE to predict season-total points under my league's PPR scoring. The final predictions blend the model's predictions with expert consensus rankings. Since the consensus is only an ordinal ranking, I convert positional ranks to point estimates using an isotonic regression fit on earlier seasons. The blend weights were also fit on earlier seasons.
+
+    Across the four validation seasons, mean absolute error was 43.04 points for the blend, 44.13 for consensus, and 44.45 for the model alone. That's a 1.09-point reduction per player, or 2.47%. For 2025 alone, the blend's MAE was 44.26 vs. 45.17 for consensus. The blend did slightly worse than consensus when evaluating starters.
+
+[^4]: The real alpha in fantasy football tends to be how much time you spend working the waiver wire and making good trades, assuming the people in your league aren't allergic to trading because of loss aversion.
+[^5]: I was picking last (my favorite spot) in a 12-team snake.
+
+    1.12 Ashton Jeanty  
+    2.1 De'Von Achane  
+    3.12 Tetairoa McMillan  
+    4.1 Zay Flowers  
+    5.12 Jalen Hurts  
+    6.1 Tyler Warren  
+    7.12 RJ Harvey  
+    8.1 DK Metcalf  
+    9.12 Jordan Addison  
+    10.1 Woody Marks  
+    11.12 Khalil Shakir  
+    12.1 Tyjae Spears  
+    13.12 Denzel Boston  
+    14.1 Malik Washington  
+    15.12 Pittsburgh Steelers D/ST  
+    16.1 Cameron Dicker

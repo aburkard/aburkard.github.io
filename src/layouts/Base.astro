@@ -2,9 +2,14 @@
 interface Props {
   title: string;
   description?: string;
+  image?: string;
+  imageAlt?: string;
 }
 
-const { title, description = "Andrew Burkard — ML Engineer in San Francisco" } = Astro.props;
+const {
+  title, description = "Andrew Burkard — ML Engineer in San Francisco",
+  image = '/og.png', imageAlt = 'Andrew Burkard — ML Engineer · San Francisco',
+} = Astro.props;
 const currentPath = Astro.url.pathname;
 
 const nav = [
@@ -27,13 +32,18 @@ const nav = [
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL('/og.png', Astro.site).href} />
+    <meta property="og:image" content={new URL(image, Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content={imageAlt} />
     <meta property="og:url" content={new URL(currentPath, Astro.site).href} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL('/og.png', Astro.site).href} />
+    <meta name="twitter:image" content={new URL(image, Astro.site).href} />
+    <meta name="twitter:image:alt" content={imageAlt} />
     <link rel="preload" href="/fonts/karla.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="preconnect" href="https://a.espncdn.com" crossorigin />
